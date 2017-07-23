@@ -20,7 +20,7 @@ public class EncodingMain {
 //        System.out.println("-------------------");
 //        galuaField.printMulTable();
 
-        galuaField.encode("informationSymbols", "encodedMessage");
+        galuaField.encode("informationSymbolsRand", "encodedMessage");
 
 //        int a = 0;
 //        int b = 14;
@@ -33,20 +33,26 @@ public class EncodingMain {
 //        galuaField.printGeneratingPolynom();
 //        galuaField.printControlSymbols();
 //        galuaField.printInformationSymbols();
-
-//        try {
-//            FileWriter fileWriter = new FileWriter("informationSymbolsRand");
-//            Random r = new Random();
-//            String text = "";
-//            for (int i = 0; i < 249; i++) {
+//
+        try {
+            FileWriter fileWriter = new FileWriter("informationSymbolsRand");
+           // FileWriter fileWriter = new FileWriter("encodedMessage");
+            Random r = new Random();
+            String text = "";
+            for (int i = 0; i < 249; i++) {
+//                text += Integer.toHexString(r.nextInt(254));
+                text += Integer.toHexString(255);
+                text += "\n";
+            }
+//            for (int i = 128; i < 249; i++) {
 ////                text += Integer.toHexString(r.nextInt(254));
-//                text += Integer.toHexString(1);
+//                text += Integer.toHexString(250);
 //                text += "\n";
 //            }
-//            fileWriter.write(text);
-//            fileWriter.flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+            fileWriter.write(text);
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

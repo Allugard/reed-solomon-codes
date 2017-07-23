@@ -19,8 +19,8 @@ public class DecodingMain {
 //        galuaField.printMulTable();
 
         galuaField.decode("encodedMessage", "error");
-//        galuaField.printDecodedMessage();
-//        galuaField.printSyndrome();
+        galuaField.printDecodedMessage();
+        galuaField.printSyndrome();
 
 
     }

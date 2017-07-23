@@ -56,6 +56,7 @@ public class Decoder {
         inputEncodedMessage(new FileReader(in));
         findSyndrome();
         if(syndromeIsZeros()){
+            outputVectorError(new FileWriter(out));
             return;
         }
         int[]buf = findSigmas(k);
@@ -67,15 +68,32 @@ public class Decoder {
 
     private void outputVectorError(FileWriter fileWriter) throws IOException {
         String text = "";
-        int j = 0;
+        //int j = 0;
+//        for (int i = 1; i <= power; i++) {
+//            if(j < betas.size() && i == power - betas.get(j)){
+//                text += Integer.toHexString(galuaElements[psis[j]]);
+//                text += "\n";
+//                j++;
+//            }else {
+//                text += 0;
+//                text += "\n";
+//            }
+//        }
         for (int i = 1; i <= power; i++) {
-            if(j < betas.size() && i == power - betas.get(j)){
-                text += Integer.toHexString(galuaElements[psis[j]]);
-                text += "\n";
-                j++;
-            }else {
-                text += 0;
-                text += "\n";
+            int j = 0;
+            for (int l = 0; l < betas.size(); l++) {
+                if (i == power - betas.get(l)) {
+                    String el = Integer.toHexString(galuaElements[psis[l]]);
+                    text += el;
+                    text += "\n";
+                } else {
+                    if(j == betas.size() - 1) {
+                        text += 0;
+                        text += "\n";
+                    }else {
+                        j++;
+                    }
+                }
             }
         }
         fileWriter.write(text);
@@ -103,7 +121,11 @@ public class Decoder {
         for (int i = 0; i < power; i++) {
             int buf = calc(i, sigmas);
             if(buf == -1){
-                betas.add(power - i);
+                if(i != 0) {
+                    betas.add(power - i);
+                } else {
+                  betas.add(i);
+                }
             }
         }
     }
@@ -146,15 +168,16 @@ public class Decoder {
             a = res[0];
             res[0] = res[1];
             res[1] = a;
-
         }
         for (int i = 0; i < buf.length; i++) {
-            int a = power - buf[i][i];
-            for (int j = i; j < buf.length; j++) {
-                buf[i][j] = mul(buf[i][j], a);
+            int a;
+            if( buf[i][i]!=0 ) {
+                a = power - buf[i][i];
+                for (int j = i; j < buf.length; j++) {
+                    buf[i][j] = mul(buf[i][j], a);
+                }
+                res[i] = mul(res[i], a);
             }
-            res[i] = mul(res[i], a);
-
             for (int j = i + 1; j < buf.length; j++) {
                 if(buf[j][i] != -1) {
                     a = buf[j][i];
